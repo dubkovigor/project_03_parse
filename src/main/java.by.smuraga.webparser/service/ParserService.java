@@ -11,7 +11,7 @@ import java.util.List;
 public class ParserService {
 
     public List<Product> parsePage(Document document,int n) {
-        List<Product> list = new ArrayList<Product>();
+        List<Product> list = new ArrayList<>();
         String location = "https://www.scalemates.com";
         Elements divElements = document.getElementsByAttributeValue("class", "ac");
         for (Element element : divElements) {
@@ -24,14 +24,14 @@ public class ParserService {
                 name = name + divElem.select("em").text().trim();//name
                 String year = divElem.children().select("div").get(divElem.children().select("div").size() - 1).text();
                 String description = "";
-                if (year.indexOf(" ") != -1) {
-                    description = year.substring(year.indexOf("|") + 2, year.length()).trim();//descriotion
+                if (year.contains(" ")) {
+                    description = year.substring(year.indexOf("|") + 2).trim();//descriotion
                     year = year.substring(0, year.indexOf(" ")).trim();//year
                 }
-                String brand = "";//brand
+                String brand;//brand
                 String scale = divElem.html();
                 scale = scale.substring(scale.indexOf("<br>"), scale.lastIndexOf("<br>"));
-                if (scale.indexOf(":") != -1) {
+                if (scale.contains(":")) {
                     brand = scale.substring(4, scale.indexOf(":") - 1).trim();
                     scale = scale.substring(scale.indexOf(":") + 1, scale.length() - 1).trim();//scale
                 } else {
@@ -39,7 +39,7 @@ public class ParserService {
                     scale = "";
                 }
                 int scaleForProduct = 0;
-                if(!scale.equals("")) {
+                if(!scale.isEmpty()) {
                     Integer.valueOf(scale);
                 }
                 String brandCatno = divElem.html();
